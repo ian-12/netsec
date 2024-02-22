@@ -10,12 +10,12 @@ while len(string_password) <= string_length:
     string_password += random.choice(string.ascii_letters + '0123456789!@#$%^&*()')
 print(f"Task 1 - Generated password: {string_password}")
 print("------------------------")
+
 # """Hash test"""
 # m = hashlib.sha256()
 # m.update(string_password.encode())
 # print(m.digest())
 # print(m.hexdigest())
-
 
 
 """Task 2"""
@@ -33,7 +33,7 @@ print("------------------------")
 
 """Task 4 - Hash Function"""
 
-salt = random.uniform(0.0, 5.0) # Generate a random salt
+salt = random.uniform(0.0, 5.0)  # Generate a random salt
 
 # TODO Lean's attempt
 salted_password = string_password + str(salt)
@@ -56,12 +56,8 @@ print(new_salted_hash_password)
 """Task 3"""
 file = open('passwords.txt', 'w')
 file.flush()
-file.write(hashed_password.hexdigest()) # String to write in file
+file.write(hashed_password.hexdigest())  # String to write in file
 file.close()
-
-
-
-
 
 file = open('passwords.txt')
 user_password_input = input("Enter Password: ")
