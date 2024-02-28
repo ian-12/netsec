@@ -3,8 +3,6 @@ import string
 import re
 import hashlib
 
-"""Task 1"""
-
 
 def main():
     """Main Menu"""
@@ -86,18 +84,17 @@ def save_to_file(password):
     return file
 
 
-"""Task 4 - Hash Function"""
-
-
 def salt_hash_password(string_password):
+    """Task 4 - Hash Function"""
     salt = random.uniform(0.0, 5.0)  # Generate a random salt
     salted_password = string_password + str(salt)
     salted_hash_password = hashlib.sha256(salted_password.encode()).hexdigest()
     print(f"Salted hash password: {salted_hash_password}")
     return salted_hash_password, salt
 
+
 def verify_hash(hash_password):
-    """Verify the password"""
+    """Task 5 - Verify password with hash"""
     user_input = input("Enter your password: ")
     pass_to_verify = user_input + str(hash_password[1])
     salted_hash_password = hashlib.sha256(pass_to_verify.encode()).hexdigest()
@@ -106,7 +103,5 @@ def verify_hash(hash_password):
     else:
         print("Password not verified")
 
-
-# Call your hash function to verify the password
 
 main()
