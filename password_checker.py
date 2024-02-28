@@ -7,7 +7,7 @@ import hashlib
 string_password = ''
 string_length = random.randint(8, 20)
 while len(string_password) <= string_length:
-    string_password += random.choice(string.ascii_letters + '0123456789!@#$%^&*()')
+    string_password += random.choice(string.ascii_letters + string.digits + string.punctuation)
 print(f"Task 1 - Generated password: {string_password}")
 print("------------------------")
 
