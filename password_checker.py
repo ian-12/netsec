@@ -8,50 +8,47 @@ import hashlib
 
 def main():
     """Main Menu"""
-    print_menu()
-    get_menu_choice()
+    display_menu()
+    choice = get_choice()
+    while choice != 6:
+        if choice == 1:
+            result = generate_password()
+        elif choice == 2:
+            result = get_valid_input()
+        elif choice == 3:
+            outfile = save_to_file(result)
+        elif choice == 4:
+            hash_password = salt_hash_password(result)
+        elif choice == 5:
+            verify_hash(hash_password)
+        else:
+            print("Invalid choice")
+        display_menu()
+        choice = get_choice()
+    print("Goodbye")
 
 
-def get_menu_choice():
-    user_input = int(input("Enter choice: "))
-    while user_input < 1 or user_input > 6:
-        user_input = int(input("Enter choice: "))
-    if user_input == 1:
-        generate_password()
-    elif user_input == 2:
-        get_valid_input()
-    elif user_input == 3:
-        save_to_file()
-    elif user_input == 4:
-        salt_hash_password()
-    # elif user_input == 5:
-    #     verify_password()
-    else:
-        exit()
-
-
-def print_menu():
+def display_menu():
     print("1. Generate Password")
-    print("2. Type new Password")
-    print("3. Write string into file")
-    print("4. Hash Function")
-    print("5. Verify Password")
-    print("6. Exit")
-    print("------------------------")
+    print("2. Type own password and validate it")
+    print("3. Save password to file")
+    print("4. Add salt and hash")
+    print("5. Verify password with hash")
+    print("6. Quit")
+
+
+def get_choice():
+    return int(input("Enter choice: "))
 
 
 def generate_password():
     """Task 1- Generate Password"""
     string_password = ''
     string_length = random.randint(8, 20)
-    while len(string_password) <= string_length:
+    for i in range(string_length):
         string_password += random.choice(string.ascii_letters + string.digits + string.punctuation)
     print(f"Generated password: {string_password}")
-    choice = input("Use this password? (Y/N): ").upper()
-    if choice == "Y":
-        return string_password
-    else:
-        get_valid_input()
+    return string_password
 
 
 def get_valid_input():
@@ -64,10 +61,11 @@ def get_valid_input():
         print("Password must be at least 8 characters long and contain at least one of each of the following:")
         print("Lowercase letter, Uppercase letter, Number, Special character")
         print("------------------------")
-        task2_input = input("Task 2 - Input: ")
-        input_length = len(task2_input)
+        new_password = input("Type new Password: ")
+        input_length = len(new_password)
         is_ok1, is_ok2, is_ok3, is_ok4 = is_valid(new_password)
     print(f"Your password is {new_password}, and the length is {input_length} characters long")
+    return new_password
 
 
 def is_valid(new_password):
@@ -78,57 +76,37 @@ def is_valid(new_password):
     return is_ok1, is_ok2, is_ok3, is_ok4
 
 
-"""Task 3 - Write string into file"""
+def save_to_file(password):
+    """Task 3 - Write string into file"""
+    file = open('passwords.txt', 'w')
+    file.flush()
+    file.write(password)  # String to write in file
+    file.close()
+    print("Your password has been written to passwords.txt")
+    return file
 
-# def save_to_file():
-#     file = open('passwords.txt', 'w')
-#     file.flush()
-#     file.write(string_password)  # String to write in file
-#     file.close()
-#     print("Task 3 - Your password has been written to passwords.txt")
-#     print("------------------------")
-#
-#
-# save_to_file()
 
 """Task 4 - Hash Function"""
 
 
-def salt_hash_password():
+def salt_hash_password(string_password):
     salt = random.uniform(0.0, 5.0)  # Generate a random salt
     salted_password = string_password + str(salt)
     salted_hash_password = hashlib.sha256(salted_password.encode()).hexdigest()
     print(f"Salted hash password: {salted_hash_password}")
-    # Use the salted has password to verify a new password attempt
-    new_password = input("Enter new password: ")
-    new_salted_password = new_password + str(salt)
-    new_salted_hash_password = hashlib.sha256(new_salted_password.encode()).hexdigest()
-    print(new_salted_hash_password)
+    return salted_hash_password, salt
 
+def verify_hash(hash_password):
+    """Verify the password"""
+    user_input = input("Enter your password: ")
+    pass_to_verify = user_input + str(hash_password[1])
+    salted_hash_password = hashlib.sha256(pass_to_verify.encode()).hexdigest()
+    if hash_password[0] == salted_hash_password:
+        print("Password verified")
+    else:
+        print("Password not verified")
 
-# hashed_password = hashlib.sha512()
-# hashed_password.update(salt)
-# hashed_password.update(string_password.encode())
-# hashed_password.digest()
-# print(f"Hashed password: {hashed_password.hexdigest()}")
-
-
-# """Task 3"""
-# file = open('passwords.txt', 'w')
-# file.flush()
-# file.write(hashed_password.hexdigest())  # String to write in file
-# file.close()
-#
-# file = open('passwords.txt')
-# user_password_input = input("Enter Password: ")
-# password_to_compare = file.readline()
-# print(password_to_compare)
-
-"""Task 5"""
-# Read a string (pasword) from the keyboard input (ELLIOT) YUHANG Feng
-# final_password = input("")
 
 # Call your hash function to verify the password
 
-# Close main function
 main()
