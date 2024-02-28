@@ -96,7 +96,6 @@ def is_valid(new_password):
 
 def salt_hash_password():
     salt = random.uniform(0.0, 5.0)  # Generate a random salt
-    # TODO Lean's attempt
     salted_password = string_password + str(salt)
     salted_hash_password = hashlib.sha256(salted_password.encode()).hexdigest()
     print(f"Salted hash password: {salted_hash_password}")
